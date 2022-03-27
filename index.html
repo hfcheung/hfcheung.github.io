@@ -351,138 +351,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://hfcheung.github.io/2022/03/02/jz/Sort/jz40/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hfcheung's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2022/03/02/jz/Sort/jz40/" itemprop="url">最小的k个数 JZ40</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-02T00:00:00+08:00">
-                2022-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="最小的k个数-JZ40"><a href="#最小的k个数-JZ40" class="headerlink" title="最小的k个数 JZ40"></a>最小的k个数 JZ40</h1><h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title">GetLeastNumbers_Solution</span><span class="params">(<span class="keyword">int</span> [] input, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (input == <span class="keyword">null</span> || k &gt; input.length || k &lt;= <span class="number">0</span>) <span class="keyword">return</span> res;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 快速排序的划分函数每次执行后都能够将数组分为两部分</span></span><br><span class="line">        <span class="comment">// 小于pivot的元素会放在数组的坐标 大于pivot的会放在右边</span></span><br><span class="line">        <span class="comment">// 并返回分界值的小标</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 定义randomizedSelected表示划分数组的[l, r]部分</span></span><br><span class="line">        <span class="comment">// 使前k小的数在数组的左侧</span></span><br><span class="line">        <span class="comment">// 假设划分函数返回的小标是pos pivot是数组中第(pos - l + 1)小的数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        randomizedSelected(input, <span class="number">0</span>, input.length - <span class="number">1</span>, k);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; ++i) &#123;</span><br><span class="line">            res.add(input[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">randomizedSelected</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (l &gt;= r) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> pos = randomizedPartition(input, l, r);</span><br><span class="line">        <span class="keyword">int</span> num = pos - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (k == num) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (k &lt; num) &#123;</span><br><span class="line">            randomizedSelected(input, l, pos - <span class="number">1</span>, k);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            randomizedSelected(input, pos + <span class="number">1</span>, r, k - num);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">randomizedPartition</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="keyword">new</span> Random().nextInt(r - l + <span class="number">1</span>) + l;</span><br><span class="line">        swap(input, r, i);</span><br><span class="line">        <span class="keyword">return</span> partition(input, l, r);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> pivot = input[r];</span><br><span class="line">        <span class="keyword">int</span> i = l - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = l; j &lt;= r - <span class="number">1</span>; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span> (input[j] &lt;= pivot) &#123;</span><br><span class="line">                i = i + <span class="number">1</span>;</span><br><span class="line">                swap(input, i, j);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = input[i];</span><br><span class="line">        input[i] = input[j];</span><br><span class="line">        input[j] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>时间复杂度：O(n<sup>2</sup>)，期望为O(n)</p>
-<p>空间复杂度：O(n)，期望为O(log n)</p>
-<hr>
-<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><h3 id="采用堆"><a href="#采用堆" class="headerlink" title="采用堆"></a>采用堆</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title">GetLeastNumbers_Solution</span><span class="params">(<span class="keyword">int</span> [] input, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (input == <span class="keyword">null</span> || k &gt; input.length || k&lt;= <span class="number">0</span>) <span class="keyword">return</span> res;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 采用大顶堆储存前k个数</span></span><br><span class="line">        <span class="comment">// 对于往后的数字 将数字与堆顶元素进行比较</span></span><br><span class="line">        <span class="comment">// 若数字比堆顶元素更小 则弹出堆顶 压入数字</span></span><br><span class="line">        <span class="comment">// 即对最大的“最小k个数”进行更新</span></span><br><span class="line">        PriorityQueue&lt;Integer&gt; queue = <span class="keyword">new</span> PriorityQueue&lt;&gt;((x, y) -&gt; y - x);</span><br><span class="line">        <span class="keyword">int</span> length = input.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (queue.size() != k) &#123;</span><br><span class="line">                queue.offer(input[i]);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (queue.peek() &gt; input[i]) &#123;</span><br><span class="line">                queue.poll();</span><br><span class="line">                queue.offer(input[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 避免poll方法的下沉恢复堆操作</span></span><br><span class="line">        Iterator&lt;Integer&gt; iter = queue.iterator();</span><br><span class="line">        <span class="keyword">while</span> (iter.hasNext()) &#123;</span><br><span class="line">            res.add(iter.next());</span><br><span class="line">        &#125; </span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>时间复杂度：O(nlog k)，堆的插入删除是O(log k)</p>
-<p>空间复杂度：O(k)</p>
-<hr>
-<h3 id="手写大顶堆"><a href="#手写大顶堆" class="headerlink" title="手写大顶堆"></a>手写大顶堆</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title">GetLeastNumbers_Solution</span><span class="params">(<span class="keyword">int</span> [] input, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (input == <span class="keyword">null</span> || k &gt; input.length || k &lt;= <span class="number">0</span>) <span class="keyword">return</span> res;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 避免</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<h3 id="计数排序（元素有限）"><a href="#计数排序（元素有限）" class="headerlink" title="计数排序（元素有限）"></a>计数排序（元素有限）</h3>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://hfcheung.github.io/2022/03/02/jz/Others/jz43/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -802,6 +670,138 @@
 <p>时间复杂度：O(n)</p>
 <p>空间复杂度：O(1)</p>
 
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hfcheung.github.io/2022/03/02/jz/Sort/jz40/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hfcheung's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/03/02/jz/Sort/jz40/" itemprop="url">最小的k个数 JZ40</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-02T00:00:00+08:00">
+                2022-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="最小的k个数-JZ40"><a href="#最小的k个数-JZ40" class="headerlink" title="最小的k个数 JZ40"></a>最小的k个数 JZ40</h1><h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title">GetLeastNumbers_Solution</span><span class="params">(<span class="keyword">int</span> [] input, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (input == <span class="keyword">null</span> || k &gt; input.length || k &lt;= <span class="number">0</span>) <span class="keyword">return</span> res;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 快速排序的划分函数每次执行后都能够将数组分为两部分</span></span><br><span class="line">        <span class="comment">// 小于pivot的元素会放在数组的坐标 大于pivot的会放在右边</span></span><br><span class="line">        <span class="comment">// 并返回分界值的小标</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 定义randomizedSelected表示划分数组的[l, r]部分</span></span><br><span class="line">        <span class="comment">// 使前k小的数在数组的左侧</span></span><br><span class="line">        <span class="comment">// 假设划分函数返回的小标是pos pivot是数组中第(pos - l + 1)小的数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        randomizedSelected(input, <span class="number">0</span>, input.length - <span class="number">1</span>, k);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; ++i) &#123;</span><br><span class="line">            res.add(input[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">randomizedSelected</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (l &gt;= r) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> pos = randomizedPartition(input, l, r);</span><br><span class="line">        <span class="keyword">int</span> num = pos - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (k == num) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (k &lt; num) &#123;</span><br><span class="line">            randomizedSelected(input, l, pos - <span class="number">1</span>, k);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            randomizedSelected(input, pos + <span class="number">1</span>, r, k - num);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">randomizedPartition</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="keyword">new</span> Random().nextInt(r - l + <span class="number">1</span>) + l;</span><br><span class="line">        swap(input, r, i);</span><br><span class="line">        <span class="keyword">return</span> partition(input, l, r);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> pivot = input[r];</span><br><span class="line">        <span class="keyword">int</span> i = l - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = l; j &lt;= r - <span class="number">1</span>; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span> (input[j] &lt;= pivot) &#123;</span><br><span class="line">                i = i + <span class="number">1</span>;</span><br><span class="line">                swap(input, i, j);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = input[i];</span><br><span class="line">        input[i] = input[j];</span><br><span class="line">        input[j] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>时间复杂度：O(n<sup>2</sup>)，期望为O(n)</p>
+<p>空间复杂度：O(n)，期望为O(log n)</p>
+<hr>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><h3 id="采用堆"><a href="#采用堆" class="headerlink" title="采用堆"></a>采用堆</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title">GetLeastNumbers_Solution</span><span class="params">(<span class="keyword">int</span> [] input, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (input == <span class="keyword">null</span> || k &gt; input.length || k&lt;= <span class="number">0</span>) <span class="keyword">return</span> res;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 采用大顶堆储存前k个数</span></span><br><span class="line">        <span class="comment">// 对于往后的数字 将数字与堆顶元素进行比较</span></span><br><span class="line">        <span class="comment">// 若数字比堆顶元素更小 则弹出堆顶 压入数字</span></span><br><span class="line">        <span class="comment">// 即对最大的“最小k个数”进行更新</span></span><br><span class="line">        PriorityQueue&lt;Integer&gt; queue = <span class="keyword">new</span> PriorityQueue&lt;&gt;((x, y) -&gt; y - x);</span><br><span class="line">        <span class="keyword">int</span> length = input.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (queue.size() != k) &#123;</span><br><span class="line">                queue.offer(input[i]);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (queue.peek() &gt; input[i]) &#123;</span><br><span class="line">                queue.poll();</span><br><span class="line">                queue.offer(input[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 避免poll方法的下沉恢复堆操作</span></span><br><span class="line">        Iterator&lt;Integer&gt; iter = queue.iterator();</span><br><span class="line">        <span class="keyword">while</span> (iter.hasNext()) &#123;</span><br><span class="line">            res.add(iter.next());</span><br><span class="line">        &#125; </span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>时间复杂度：O(nlog k)，堆的插入删除是O(log k)</p>
+<p>空间复杂度：O(k)</p>
+<hr>
+<h3 id="手写大顶堆"><a href="#手写大顶堆" class="headerlink" title="手写大顶堆"></a>手写大顶堆</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title">GetLeastNumbers_Solution</span><span class="params">(<span class="keyword">int</span> [] input, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (input == <span class="keyword">null</span> || k &gt; input.length || k &lt;= <span class="number">0</span>) <span class="keyword">return</span> res;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 避免</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="计数排序（元素有限）"><a href="#计数排序（元素有限）" class="headerlink" title="计数排序（元素有限）"></a>计数排序（元素有限）</h3>
           
         
       
@@ -1465,7 +1465,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">&gt;</a>
   </nav>
 
 
